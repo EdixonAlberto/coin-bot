@@ -1,0 +1,12 @@
+{
+  "name": "coin-bot",
+  "version": "1.0.0",
+  "description": "Discord bot to manager cryptocurrencies",
+  "main": "index.js",
+  "author": "Edixon Alberto",
+  "license": "MIT",
+  "private": false,
+  "dependencies": {
+    "discord.js": "^11.5.1"
+  }
+}
