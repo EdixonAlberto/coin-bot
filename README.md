@@ -7,7 +7,11 @@
 Discord bot to manager cryptocurrencies
 
 ### Comands
+```
+yarn install
 
+yarn start
+```
 ### Screenshots
 
 ![image](./docs/image.png)
