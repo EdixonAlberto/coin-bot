@@ -2,11 +2,30 @@
   "name": "coin-bot",
   "version": "1.0.0",
   "description": "Discord bot to manager cryptocurrencies",
+  "keywords": [
+    "bot",
+    "typescript",
+    "discord-js",
+    "cryptocurrence",
+    "bitcoin"
+  ],
   "main": "index.js",
   "author": "Edixon Alberto",
   "license": "MIT",
   "private": false,
+  "scripts": {
+    "dev": "ts-node ./src",
+    "start": "nodemon -e ts -w ./src --exec \"yarn run dev\""
+  },
   "dependencies": {
+    "axios": "^0.19.2",
     "discord.js": "^11.5.1"
+  },
+  "devDependencies": {
+    "@types/node": "^13.7.4",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.2",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.2"
   }
 }
