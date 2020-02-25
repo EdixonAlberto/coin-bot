@@ -9,7 +9,11 @@ Discord bot to manager cryptocurrencies
 ### Comands
 ```
 yarn install
+```
 
+crete file `.env` and add el environment: **TOKEN=__DISCORD_TOKEN__**
+
+```
 yarn start
 ```
 ### Screenshots
