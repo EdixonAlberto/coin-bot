@@ -9,3 +9,5 @@ type ipinfo = {
   timezone: string;
   readme: string;
 };
+
+type TAsset = 'BTC'

@@ -1,12 +1,14 @@
-import dotenv from 'dotenv';
+import { config as envConfig } from 'dotenv';
 
-dotenv.config({
+envConfig({
   path: './.env'
 });
 
-const env = process.env;
+const ENV: NodeJS.ProcessEnv = process.env;
 
-export default {
+const config = {
   prefix: '$',
-  token: env.TOKEN
-}
+  token: ENV.BOT_TOKEN
+};
+
+export default config;
