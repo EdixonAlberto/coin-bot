@@ -10,4 +10,15 @@ type ipinfo = {
   readme: string;
 };
 
-type TAsset = 'BTC'
+type TAsset = 'BTC';
+
+type TOptions = {
+  prefix: string;
+  token: string;
+};
+
+type TConfig = {
+  token: string;
+};
+
+type TContent = {};

@@ -6,9 +6,8 @@ envConfig({
 
 const ENV: NodeJS.ProcessEnv = process.env;
 
-const config = {
-  prefix: '$',
-  token: ENV.BOT_TOKEN
+const config: TConfig = {
+  token: ENV.BOT_TOKEN || ''
 };
 
 export default config;
