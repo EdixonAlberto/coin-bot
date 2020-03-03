@@ -2,20 +2,18 @@ import { Message } from 'discord.js';
 
 class BotResponse {
   private response: Message;
-  // private code: boolean;
 
   constructor(message: Message) {
     this.response = message;
-    // this.code = code;
   }
 
-  public general(response: string) {
+  public general(response: string): void {
     this.response.channel.send(response, {
       code: false
     });
   }
 
-  public direct(response: string) {
+  public direct(response: string): void {
     this.response.reply(response, {
       code: false
     });

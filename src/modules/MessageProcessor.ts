@@ -1,25 +1,31 @@
 import { Message } from 'discord.js';
+import { commandsList } from '../enumerations';
 
 class MessageProcessor {
-  private _content: any;
+  private _content: TContent = {
+    prefix: '',
+    command: '' as commandsList,
+    params: [],
+    message: {} as Message
+  };
 
   constructor(message: Message) {
-    this._content = {};
     this.contentExtract(message);
   }
 
-  contentExtract(message: Message) {
+  private contentExtract(message: Message): void {
     const words = message.content.split(' ');
     const prefixComand: string = words.shift() || '';
 
     this._content = {
       prefix: message.content.substr(0, 1),
-      comand: prefixComand.substr(1),
-      params: words
+      command: prefixComand.substr(1) as commandsList,
+      params: words,
+      message
     };
   }
 
-  public get content() {
+  public get content(): TContent {
     return this._content;
   }
 }

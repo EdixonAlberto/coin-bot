@@ -1,43 +1,44 @@
 import { Client, Message } from 'discord.js';
-import * as Command from './commands';
+import BotResponse from './modules/BotResponse';
 import MessageProcessor from './modules/MessageProcessor';
-import Response from './modules/BotResponse';
+import * as Command from './commands';
+import { commandsList } from './enumerations';
 
 class Bot {
   private static client: Client;
   private static options: TOptions;
 
-  constructor(options: TOptions) {
-    Bot.options = options;
+  constructor(_options: TOptions) {
+    Bot.options = _options;
     Bot.client = new Client(); // TODO: agregar mas opciones de configuracion
     this.event();
   }
 
-  public start() {
+  public start(): void {
     Bot.client.login(Bot.options.token);
   }
 
-  private event() {
-    console.log('event');
-
-    Bot.client.on('ready', () => console.log('CoinBot -> ON'));
+  private event(): void {
+    Bot.client.on('ready', () => console.log('>> BOT -> OK'));
     Bot.client.on('message', (message: Message) => {
-      console.log('>> ' + message.content);
-
       const { content } = new MessageProcessor(message);
-      const response = new Response(message);
+      const response: BotResponse = new BotResponse(message);
       this.commands(content, response);
     });
   }
 
-  private commands(content: any, response: Response) {
-    console.log(content);
+  private commands(content: TContent, response: BotResponse): void {
     if (content.prefix === Bot.options.prefix) {
-      // Command.ip(content, response);
-      // Command.date(content response);
-      Command.price(content, response);
-    } else {
-      console.log('error');
+      console.log('>> CONTENT -> ' + content);
+
+      if (commandsList[content.command]) {
+        Command.price(content, response);
+        Command.clean(content, response);
+        Command.alarm(content, response);
+      } else {
+        response.general('Comando Incorrecto 😝');
+        console.log('>> COMMAND -> Incorrect');
+      }
     }
   }
 }

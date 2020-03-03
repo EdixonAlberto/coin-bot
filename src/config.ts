@@ -1,13 +1,8 @@
-import { config as envConfig } from 'dotenv';
-
-envConfig({
-  path: './.env'
-});
-
 const ENV: NodeJS.ProcessEnv = process.env;
 
 const config: TConfig = {
-  token: ENV.BOT_TOKEN || ''
+  token: ENV.DISCORD_TOKEN || '',
+  alarmInterval: (Number(ENV.ALARM_INTERVAL_MINUTE) || 20) * 60000
 };
 
 export default config;

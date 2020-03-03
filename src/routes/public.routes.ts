@@ -6,4 +6,4 @@ export const getPrice = async (asset: string): Promise<number> => {
   );
   const price = Number(res.data.price).toFixed(2);
   return Number(price);
-}
+};

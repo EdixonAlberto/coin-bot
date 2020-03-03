@@ -14,5 +14,5 @@ type TOptions = {
 
 type TConfig = {
   token: string;
-  alarmIntervalMinute: number;
+  alarmInterval: number;
 };
