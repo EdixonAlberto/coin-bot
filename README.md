@@ -32,4 +32,4 @@ The bot command list in discord can be found [HERE](./src/enumerations.ts).
 
 ### Screenshots
 
-![image](./docs/image.png)
+![image](./docs/chat-discord.png)
