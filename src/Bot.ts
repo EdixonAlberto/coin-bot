@@ -29,7 +29,7 @@ class Bot {
 
   private commands(content: TContent, response: BotResponse): void {
     if (content.prefix === Bot.options.prefix) {
-      console.log('>> CONTENT -> ' + content);
+      console.log('>> CONTENT -> ' + JSON.stringify(content));
 
       if (commandsList[content.command]) {
         Command.price(content, response);

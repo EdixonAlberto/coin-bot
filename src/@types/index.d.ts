@@ -2,7 +2,7 @@ type TContent = {
   prefix: string;
   command: import('../enumerations').commandsList;
   params: Array<string>;
-  message: import('discord.js').Message;
+  message: () => import('discord.js').Message;
 };
 
 type TAsset = 'BTC';
@@ -16,3 +16,9 @@ type TConfig = {
   token: string;
   alarmInterval: number;
 };
+
+declare namespace NodeJS {
+  interface Global {
+    config: TConfig;
+  }
+}
