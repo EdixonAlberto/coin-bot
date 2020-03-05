@@ -19,11 +19,11 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "prod": "node -r ./dist/src/config -r ./dist/src",
+    "prod": "node -r ./.env -r ./dist/src/config -r ./dist/src",
     "dev": "ts-node -r ./.env -r ./src/config -r ./src",
     "lint": "prettier --write ./src/**/*.ts",
     "build": "tsc",
-    "start": "yarn run prod",
+    "start": "node -r ./dist/src/config -r ./dist/src",
     "start:prod": "yarn run build && yarn run prod",
     "start:dev": "nodemon -e ts -w ./src --exec \"clear && yarn run dev\""
   },

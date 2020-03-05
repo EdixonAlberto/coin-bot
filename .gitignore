@@ -4,6 +4,6 @@ dist/
 .vscode/
 
 # Files
-.env
+development.env
 *.log
 commands.old.ts
