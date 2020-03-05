@@ -4,18 +4,32 @@
 [![MIT license](https://img.shields.io/badge/license-MIT-green.svg)](./LICENSE.md)
 ![GitHub](https://img.shields.io/github/followers/EdixonAlberto.svg?label=Follow&style=social)
 
-Discord bot to manager cryptocurrencies
+Discord bot to manager cryptocurrencies in binance exchange.
 
-### Comands
+### Get Started
+
+Crete file `development.env` in folder: `/.env` and add el environment: **DISCORD_TOKEN**.
+
+```sh
+cp .env/template.env .env/development.env
 ```
+
+Install dependencies and start.
+
+```sh
 yarn install
+
+yarn run start:dev # to develop
+
+yarn run start:prod # to production
 ```
 
-crete file `.env` and add el environment: **TOKEN=__DISCORD_TOKEN__**
+The command and `yarn start` is reserved to heroku.
 
-```
-yarn start
-```
+The bot command list in discord can be found [HERE](./src/enumerations.ts).
+
+###
+
 ### Screenshots
 
-![image](./docs/image.png)
+![image](./docs/chat-discord.png)

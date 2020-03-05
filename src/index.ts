@@ -1,15 +1,8 @@
-import { Client, Message } from 'discord.js';
-import config from './config';
-import ControllerCommand from './ControllerCommand';
+import Bot from './Bot';
 
-const bot = new Client();
-
-bot.on('ready', () => {
-  console.log('CoinBot -> ON');
+const bot = new Bot({
+  prefix: '$',
+  token: config.token
 });
 
-bot.on('message', (message: Message) => {
-  ControllerCommand(message);
-});
-
-bot.login(config.token);
+bot.start();

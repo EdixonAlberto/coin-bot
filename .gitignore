@@ -1,4 +1,9 @@
+# Folders
 node_modules/
-.vscode
-.env
+dist/
+.vscode/
+
+# Files
+development.env
 *.log
+commands.old.ts
