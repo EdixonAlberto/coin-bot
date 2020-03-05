@@ -1,10 +1,9 @@
 export enum commandsList {
+  // Tool
   ping = 'ping',
   date = 'date',
-  ip = 'ip',
-  price = 'price',
   clean = 'clean',
-  thanks = 'thanks',
-  bot = 'bot',
+  // Coin
+  price = 'price',
   alarm = 'alarm'
 }

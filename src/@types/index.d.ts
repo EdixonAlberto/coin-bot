@@ -13,6 +13,7 @@ type TOptions = {
 };
 
 type TConfig = {
+  nodeEnv: string;
   token: string;
   alarmInterval: number;
 };

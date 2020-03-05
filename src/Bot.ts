@@ -29,11 +29,17 @@ class Bot {
 
   private commands(content: TContent, response: BotResponse): void {
     if (content.prefix === Bot.options.prefix) {
-      console.log('>> CONTENT -> ' + JSON.stringify(content));
+      if (config.nodeEnv === 'development')
+        console.log('>> CONTENT -> ' + JSON.stringify(content));
 
       if (commandsList[content.command]) {
-        Command.price(content, response);
+        // Tools
+        Command.ping(content, response);
+        Command.date(content, response);
         Command.clean(content, response);
+
+        // Coins
+        Command.price(content, response);
         Command.alarm(content, response);
       } else {
         response.general('Comando Incorrecto 😝');
