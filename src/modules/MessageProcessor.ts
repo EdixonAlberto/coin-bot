@@ -6,7 +6,9 @@ class MessageProcessor {
     prefix: '',
     command: '' as commandsList,
     params: [],
-    message: {} as Message
+    message: () => {
+      return {} as Message;
+    }
   };
 
   constructor(message: Message) {
@@ -21,7 +23,7 @@ class MessageProcessor {
       prefix: message.content.substr(0, 1),
       command: prefixComand.substr(1) as commandsList,
       params: words,
-      message
+      message: () => message
     };
   }
 
