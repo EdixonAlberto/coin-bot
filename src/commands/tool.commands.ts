@@ -1,21 +1,21 @@
 import { Message } from 'discord.js';
 import { commandsList } from '../enumerations';
-import Response from '../modules/BotResponse';
+import BotResponse from '../modules/BotResponse';
 
-export const ping = (content: TContent, response: Response): void => {
+export const ping = (content: TContent, response: BotResponse): void => {
   if (content.command === commandsList.ping) {
     response.general('Pong! 🏓');
   }
 };
 
-export const date = (content: TContent, response: Response): void => {
+export const date = (content: TContent, response: BotResponse): void => {
   if (content.command === commandsList.date) {
     const date = new Date();
     response.general(date.getUTCDate() + '/' + date.getDay() + '/' + date.getFullYear());
   }
 };
 
-export const clean = async (content: TContent, response: Response): Promise<void> => {
+export const clean = async (content: TContent, response: BotResponse): Promise<void> => {
   // TODO: Verificar si se necesita una respuesta
   if (content.command === commandsList.clean) {
     try {
@@ -31,7 +31,7 @@ export const clean = async (content: TContent, response: Response): Promise<void
 /* Boilerplate */
 // export const /* functionName */ = async (
 //     content: TContent,
-//     response: Response
+//     response: BotResponse
 //   ): Promise<void> => {
 //     if (content.command === commandsList. /* command */) {
 //       try {

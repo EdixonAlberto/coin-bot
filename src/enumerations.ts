@@ -5,5 +5,6 @@ export enum commandsList {
   clean = 'clean',
   // Coin
   price = 'price',
-  alarm = 'alarm'
+  alarm = 'alarm',
+  orderbook = 'orderbook'
 }

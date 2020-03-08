@@ -41,6 +41,7 @@ class Bot {
         // Coins
         Command.price(content, response);
         Command.alarm(content, response);
+        Command.orderbook(content, response);
       } else {
         response.general('Comando Incorrecto 😝');
         console.log('>> COMMAND -> Incorrect');
