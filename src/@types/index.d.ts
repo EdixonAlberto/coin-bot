@@ -1,2 +1,2 @@
-import './responses';
+import './binance';
 import './bot';
