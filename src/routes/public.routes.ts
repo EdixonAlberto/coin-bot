@@ -9,19 +9,25 @@ export const getPrice = async (asset: string): Promise<number> => {
   );
   const response: TResponses['tickerPrice'] = res.data;
 
-  const price = Number(Number(response).toFixed(2));
+  const price = Number(Number(response.price).toFixed(2));
   return price;
 };
 
-export const getSpread = async (asset: string): Promise<TSpread> => {
+export const getBestOrder = async (asset: string): Promise<TBestOrder> => {
   const res = await axios.get(
     `${BINANCE_URL}/ticker/bookTicker?symbol=${asset + STABLE_COIN}`
   );
   const response: TResponses['bookTicker'] = res.data;
 
-  const spread: TSpread = {
-    bid: [response.bidPrice, response.bidQty],
-    ask: [response.askPrice, response.askQty]
+  const spread: TBestOrder = {
+    bid: {
+      price: response.bidPrice,
+      qty: response.bidQty
+    },
+    ask: {
+      price: response.askPrice,
+      qty: response.askQty
+    }
   };
   return spread;
 };
@@ -32,9 +38,19 @@ export const getOrderBook = async (asset: string, limit: number): Promise<TOrder
   );
   const response: TResponses['orderBook'] = res.data;
 
-  const orderBook = {
-    bids: response.bids,
-    asks: response.asks
-  };
+  let orderBook: TOrderBook = { bids: [], asks: [] };
+  for (let index = 0; index < response.bids.length; index++) {
+    const bid: [string, string] = response.bids[index];
+    const ask: [string, string] = response.asks[index];
+
+    orderBook.bids.push({
+      price: bid[0],
+      qty: bid[1]
+    });
+    orderBook.asks.push({
+      price: ask[0],
+      qty: ask[1]
+    });
+  }
   return orderBook;
 };
