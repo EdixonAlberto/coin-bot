@@ -1,8 +1,12 @@
 import BotResponse from '../modules/BotResponse';
-import { getPrice } from '../routes';
+import { getPrice, getOrderBook } from '../routes';
 import { commandsList } from '../enumerations';
+import Utils from '../modules/Utils';
 
 const ALARM_INTERVAL: number = config.alarmInterval; // Interval in second
+const DEFAULT_LIMIT: number = 5;
+const DECIMAL_QTY: number = 2;
+const HIGH_QTY: number = 0.1;
 
 const priceResponse = (asset: string, price: number, res: BotResponse): void => {
   res.general(`Precio del ${asset} = **${price}** $`);
@@ -11,14 +15,13 @@ const priceResponse = (asset: string, price: number, res: BotResponse): void => 
 export const price = async (content: TContent, response: BotResponse): Promise<void> => {
   if (content.command === commandsList.price) {
     try {
-      let asset: string = content.params[0];
-      asset = (asset || 'btc').toUpperCase();
+      let asset: string = (content.params[0] || 'btc').toUpperCase();
 
-      const priceNow: number = await getPrice(asset);
+      const exchangePrice: number = await getPrice(asset);
 
-      response.general(`Precio del ${asset} = **${priceNow}** $`);
+      response.general(`Precio del ${asset} = **${exchangePrice}** $`);
     } catch (error) {
-      console.log('>> PRICE -> ' + error);
+      console.error('>> PRICE -> ' + error);
     }
   }
 };
@@ -27,42 +30,110 @@ export const alarm = async (content: TContent, response: BotResponse): Promise<v
   // TODO: Validar multiples alarmas llevando un registro de las mismas en una DB
   if (content.command === commandsList.alarm) {
     const ecuation: Array<string> = content.params;
-
-    const asset: string = ecuation[0].toUpperCase();
     const sign: string = ecuation[1];
-    const price: number = Number(ecuation[2]);
 
-    let exchangePrice: number = await getPrice(asset);
-    console.log('Price = ' + exchangePrice);
+    if (['>', '=', '<'].includes(sign)) {
+      const asset: string = ecuation[0].toUpperCase();
+      const price: number = Number(ecuation[2]);
 
-    const priceMonitor = setInterval(async () => {
-      exchangePrice = await getPrice(asset);
-      console.log('Price = ' + exchangePrice);
+      try {
+        let exchangePrice: number = await getPrice(asset);
+        if (config.nodeEnv) console.log('Price = ' + exchangePrice);
 
-      switch (sign) {
-        case '>':
-          if (exchangePrice >= price) {
-            priceResponse(asset, price, response);
-            clearInterval(priceMonitor);
+        // TODO: abstraer price monitor
+        const priceMonitor = setInterval(async () => {
+          exchangePrice = await getPrice(asset);
+          if (config.nodeEnv) console.log('Price = ' + exchangePrice);
+
+          switch (sign) {
+            case '>':
+              if (exchangePrice >= price) {
+                priceResponse(asset, price, response);
+                clearInterval(priceMonitor);
+              }
+              break;
+
+            case '=':
+              if (exchangePrice == price) {
+                priceResponse(asset, price, response);
+                clearInterval(priceMonitor);
+              }
+              break;
+
+            case '<':
+              if (exchangePrice <= price) {
+                priceResponse(asset, price, response);
+                clearInterval(priceMonitor);
+              }
+              break;
           }
-          break;
-
-        case '=':
-          if (exchangePrice == price) {
-            priceResponse(asset, price, response);
-            clearInterval(priceMonitor);
-          }
-          break;
-
-        case '<':
-          if (exchangePrice <= price) {
-            priceResponse(asset, price, response);
-            clearInterval(priceMonitor);
-          }
-          break;
+        }, ALARM_INTERVAL);
+      } catch (error) {
+        console.error('>> ALARM ->' + error);
       }
-    }, ALARM_INTERVAL);
+      // TODO: Cambiar por un id corto que indentifique la alarma activada y guardarla usando redux
+      response.general(`OK yo te aviso! 👍`);
+    } else {
+      response.embeded({
+        header: 'ALARM',
+        title: 'Signo Incorrecto',
+        detail: `Solo los siguientes signos de comparación
+          estan disponible: **>**, **=**, **<**`,
+        color: '0xff0000'
+      });
+    }
+  }
+};
 
-    response.general(`OK yo te aviso! 👍`);
+export const orderbook = async (
+  content: TContent,
+  response: BotResponse
+): Promise<void> => {
+  if (content.command === commandsList.orderbook) {
+    const asset: string = (content.params[0] || 'btc').toUpperCase();
+    const limit: number = Number(content.params[1] || DEFAULT_LIMIT);
+
+    try {
+      const orderbook: TOrderBook = await getOrderBook(asset, limit);
+
+      let bestOrderBid = '';
+      let bestOrderAsk = '';
+
+      ['bids', 'asks'].map((_bestOrder: string) => {
+        const bestOrder: 'bids' | 'asks' = _bestOrder as 'bids' | 'asks';
+        const bestOrderList = orderbook[bestOrder];
+
+        for (let index = 0; index < bestOrderList.length; index++) {
+          let price: string = bestOrderList[index].price;
+          price = Utils.Float.convert(price, DECIMAL_QTY);
+
+          let qty: string = bestOrderList[index].qty;
+          qty = Number(qty) >= HIGH_QTY ? `__${qty}__` : qty;
+
+          const formatPriceQty: string = `${price} $ - ${qty} ${asset}\n`;
+
+          if (bestOrder === 'bids') bestOrderBid += formatPriceQty;
+          else bestOrderAsk += formatPriceQty;
+        }
+      });
+
+      response.embeded({
+        header: 'ORDERBOOK',
+        title: `Los mejores precio/cantidad en el libro de ordenes para ${asset}`,
+        detail: [
+          {
+            title: 'Bids',
+            content: bestOrderBid
+          },
+          {
+            title: 'Asks',
+            content: bestOrderAsk
+          }
+        ],
+        color: '#FF5733'
+      });
+    } catch (error) {
+      console.error('>> ORDERBOOK -> ' + error);
+    }
   }
 };
