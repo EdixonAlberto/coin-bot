@@ -21,9 +21,16 @@ type TConfig = {
 type TEmbed = {
   header: string;
   title: string;
-  detail: string;
+  detail: string | TTable;
   footer?: string;
   color?: string;
+};
+
+type TTable = Array<TField>;
+
+type TField = {
+  title: string;
+  content: string;
 };
 
 /***************************************** DECLARATIONS *********************************/
