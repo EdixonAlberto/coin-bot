@@ -15,6 +15,9 @@ type TResponses = {
     bids: Array<[string, string]>;
     asks: Array<[string, string]>;
   };
+  time: {
+    serverTime: number;
+  };
 };
 
 type TOrderBook = {
@@ -32,3 +35,5 @@ type TBestOrder = {
     qty: string;
   };
 };
+
+type TServerTime = number;

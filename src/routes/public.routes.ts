@@ -1,11 +1,11 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
-const BINANCE_URL = 'https://api.binance.com/api/v3';
+const EXCHANGE_URL: string = config.exchange.url;
 const STABLE_COIN = 'USDT';
 
 export const getPrice = async (asset: string): Promise<number> => {
-  const res = await axios.get(
-    `${BINANCE_URL}/ticker/price?symbol=${asset + STABLE_COIN}`
+  const res: AxiosResponse = await axios.get(
+    `${EXCHANGE_URL}/ticker/price?symbol=${asset + STABLE_COIN}`
   );
   const response: TResponses['tickerPrice'] = res.data;
 
@@ -14,8 +14,8 @@ export const getPrice = async (asset: string): Promise<number> => {
 };
 
 export const getBestOrder = async (asset: string): Promise<TBestOrder> => {
-  const res = await axios.get(
-    `${BINANCE_URL}/ticker/bookTicker?symbol=${asset + STABLE_COIN}`
+  const res: AxiosResponse = await axios.get(
+    `${EXCHANGE_URL}/ticker/bookTicker?symbol=${asset + STABLE_COIN}`
   );
   const response: TResponses['bookTicker'] = res.data;
 
@@ -33,8 +33,8 @@ export const getBestOrder = async (asset: string): Promise<TBestOrder> => {
 };
 
 export const getOrderBook = async (asset: string, limit: number): Promise<TOrderBook> => {
-  const res = await axios.get(
-    `${BINANCE_URL}/depth?symbol=${asset + STABLE_COIN}&limit=${limit}`
+  const res: AxiosResponse = await axios.get(
+    `${EXCHANGE_URL}/depth?symbol=${asset + STABLE_COIN}&limit=${limit}`
   );
   const response: TResponses['orderBook'] = res.data;
 
@@ -53,4 +53,12 @@ export const getOrderBook = async (asset: string, limit: number): Promise<TOrder
     });
   }
   return orderBook;
+};
+
+export const getServerTime = async (): Promise<TServerTime> => {
+  const res: AxiosResponse = await axios.get(`${EXCHANGE_URL}/time`);
+  const response: TResponses['time'] = res.data;
+
+  const time = response.serverTime;
+  return time;
 };
