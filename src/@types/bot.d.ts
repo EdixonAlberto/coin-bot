@@ -13,9 +13,16 @@ type TOptions = {
 };
 
 type TConfig = {
-  nodeEnv: string;
-  token: string;
+  modeDebug: boolean;
+  discordToken: string;
   alarmInterval: number;
+  exchange: {
+    url: string;
+    account: {
+      apiKey: string;
+      secretKey: string;
+    };
+  };
 };
 
 type TEmbed = {

@@ -1,16 +1,12 @@
-import BotResponse from '../modules/BotResponse';
-import { getPrice, getOrderBook } from '../routes';
 import { commandsList } from '../enumerations';
+import BotResponse from '../modules/BotResponse';
 import Utils from '../modules/Utils';
+import { getOrderBook, getPrice } from '../routes';
 
 const ALARM_INTERVAL: number = config.alarmInterval; // Interval in second
 const DEFAULT_LIMIT: number = 5;
 const DECIMAL_QTY: number = 2;
 const HIGH_QTY: number = 0.1;
-
-const priceResponse = (asset: string, price: number, res: BotResponse): void => {
-  res.general(`Precio del ${asset} = **${price}** $`);
-};
 
 export const price = async (content: TContent, response: BotResponse): Promise<void> => {
   if (content.command === commandsList.price) {
@@ -19,7 +15,7 @@ export const price = async (content: TContent, response: BotResponse): Promise<v
 
       const exchangePrice: number = await getPrice(asset);
 
-      response.general(`Precio del ${asset} = **${exchangePrice}** $`);
+      response.general(`Precio del ${asset} = **${exchangePrice} $**`);
     } catch (error) {
       console.error('>> PRICE -> ' + error);
     }
@@ -35,50 +31,52 @@ export const alarm = async (content: TContent, response: BotResponse): Promise<v
     if (['>', '=', '<'].includes(sign)) {
       const asset: string = ecuation[0].toUpperCase();
       const price: number = Number(ecuation[2]);
+      let alarmaActive: boolean = false;
 
       try {
         let exchangePrice: number = await getPrice(asset);
-        if (config.nodeEnv) console.log('Price = ' + exchangePrice);
+        if (config.modeDebug) console.log('Price = ' + exchangePrice);
 
         // TODO: abstraer price monitor
         const priceMonitor = setInterval(async () => {
           exchangePrice = await getPrice(asset);
-          if (config.nodeEnv) console.log('Price = ' + exchangePrice);
+          if (config.modeDebug) console.log('Price = ' + exchangePrice);
 
           switch (sign) {
             case '>':
-              if (exchangePrice >= price) {
-                priceResponse(asset, price, response);
-                clearInterval(priceMonitor);
-              }
+              if (exchangePrice >= price) alarmaActive = true;
               break;
 
             case '=':
-              if (exchangePrice == price) {
-                priceResponse(asset, price, response);
-                clearInterval(priceMonitor);
-              }
+              if (exchangePrice == price) alarmaActive = true;
               break;
 
             case '<':
-              if (exchangePrice <= price) {
-                priceResponse(asset, price, response);
-                clearInterval(priceMonitor);
-              }
+              if (exchangePrice <= price) alarmaActive = true;
               break;
+          }
+
+          if (alarmaActive) {
+            response.embeded({
+              header: 'ALARMA',
+              title: `Alarma ${'id'} activada`,
+              detail: `Precio del ${asset} = **${exchangePrice} $**`,
+              color: 'green'
+            });
+            clearInterval(priceMonitor);
           }
         }, ALARM_INTERVAL);
       } catch (error) {
         console.error('>> ALARM ->' + error);
       }
-      // TODO: Cambiar por un id corto que indentifique la alarma activada y guardarla usando redux
+      // TODO: Cambiar por un id corto que indentifique la alarma activada
+      // y guardarla usando redux
       response.general(`OK yo te aviso! 👍`);
     } else {
       response.embeded({
         header: 'ALARM',
         title: 'Signo Incorrecto',
-        detail: `Solo los siguientes signos de comparación
-          estan disponible: **>**, **=**, **<**`,
+        detail: `Solo los siguientes signos de comparación estan disponible: \`>, =, <\``,
         color: '0xff0000'
       });
     }
