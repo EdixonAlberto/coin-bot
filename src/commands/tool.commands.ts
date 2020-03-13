@@ -23,7 +23,7 @@ export const clean = async (content: TContent, response: BotResponse): Promise<v
       const messages = await server.channel.messages.fetch();
       await server.channel.bulkDelete(messages);
     } catch (error) {
-      console.error(`ERROR: ${content.command} >> ${error}`);
+      console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
     }
   }
 };

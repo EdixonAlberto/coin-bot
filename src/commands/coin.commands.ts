@@ -17,7 +17,7 @@ export const price = async (content: TContent, response: BotResponse): Promise<v
 
       response.general(`Precio del ${asset} = **${exchangePrice} $**`);
     } catch (error) {
-      console.error('>> PRICE -> ' + error);
+      console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
     }
   }
 };
@@ -67,7 +67,7 @@ export const alarm = async (content: TContent, response: BotResponse): Promise<v
           }
         }, ALARM_INTERVAL);
       } catch (error) {
-        console.error('>> ALARM ->' + error);
+        console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
       }
       // TODO: Cambiar por un id corto que indentifique la alarma activada
       // y guardarla usando redux
@@ -131,7 +131,7 @@ export const orderbook = async (
         color: '#FF5733'
       });
     } catch (error) {
-      console.error('>> ORDERBOOK -> ' + error);
+      console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
     }
   }
 };
