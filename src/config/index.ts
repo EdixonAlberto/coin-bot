@@ -1,7 +1,7 @@
 const ENV: NodeJS.ProcessEnv = process.env;
 
 const config: TConfig = {
-  modeDebug: ENV.NODE_ENV ? false : true,
+  // Environments
   discordToken: ENV.DISCORD_TOKEN || '',
   alarmInterval: (Number(ENV.ALARM_INTERVAL_MINUTE) || 30) * 60000,
   exchange: {
@@ -10,6 +10,13 @@ const config: TConfig = {
       apiKey: ENV.API_KEY || '',
       secretKey: ENV.SECRET_KEY || ''
     }
+  },
+  // Internal
+  modeDebug: ENV.NODE_ENV ? false : true,
+  defaultAsset: 'BTC',
+  decimalQty: {
+    asset: 2,
+    fiat: 3
   }
 };
 

@@ -5,15 +5,13 @@ type TContent = {
   message: () => import('discord.js').Message;
 };
 
-type TAsset = 'BTC';
-
 type TOptions = {
   prefix: string;
   token: string;
 };
 
 type TConfig = {
-  modeDebug: boolean;
+  // Configuration environments
   discordToken: string;
   alarmInterval: number;
   exchange: {
@@ -22,6 +20,13 @@ type TConfig = {
       apiKey: string;
       secretKey: string;
     };
+  };
+  // Configuration internal
+  modeDebug: boolean;
+  defaultAsset: TAsset;
+  decimalQty: {
+    asset: number;
+    fiat: number;
   };
 };
 
@@ -40,7 +45,14 @@ type TField = {
   content: string;
 };
 
-/***************************************** DECLARATIONS *********************************/
+type TDataRequest = {
+  recvWindow: number;
+  timestamp: number;
+  signature: string;
+  apiKey: string;
+};
+
+/************************************ DECLARATIONS **************************************/
 
 declare namespace NodeJS {
   interface Global {

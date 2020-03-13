@@ -8,7 +8,7 @@ Discord bot to manager cryptocurrencies in binance exchange.
 
 ### Get Started
 
-Crete file `development.env` in folder: `/.env` and add el environment: **DISCORD_TOKEN**.
+Crete file `development.env` in folder: `/.env` and add the environment.
 
 ```sh
 cp .env/template.env .env/development.env
@@ -19,9 +19,11 @@ Install dependencies and start.
 ```sh
 yarn install
 
-yarn run start:dev # to develop
+yarn run start:dev # to development
 
-yarn run start:prod # to production
+yarn run start:prod # to production - LOCAL
+
+yarn start # to production - SERVIDOR
 ```
 
 The command and `yarn start` is reserved to heroku.
