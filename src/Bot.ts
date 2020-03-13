@@ -29,8 +29,7 @@ class Bot {
 
   private commands(content: TContent, response: BotResponse): void {
     if (content.prefix === Bot.options.prefix) {
-      if (config.nodeEnv === 'development')
-        console.log('>> CONTENT -> ' + JSON.stringify(content));
+      if (config.modeDebug) console.log('>> CONTENT -> ' + JSON.stringify(content));
 
       if (commandsList[content.command]) {
         // Tools
@@ -42,6 +41,9 @@ class Bot {
         Command.price(content, response);
         Command.alarm(content, response);
         Command.orderbook(content, response);
+
+        // Account
+        Command.balance(content, response);
       } else {
         response.general('Comando Incorrecto 😝');
         console.log('>> COMMAND -> Incorrect');

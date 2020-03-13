@@ -6,5 +6,7 @@ export enum commandsList {
   // Coin
   price = 'price',
   alarm = 'alarm',
-  orderbook = 'orderbook'
+  orderbook = 'orderbook',
+  // Account
+  balance = 'balance'
 }

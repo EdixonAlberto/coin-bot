@@ -18,6 +18,18 @@ type TResponses = {
   time: {
     serverTime: number;
   };
+  account: {
+    makerCommission: number;
+    takerCommission: number;
+    buyerCommission: number;
+    sellerCommission: number;
+    canTrade: boolean;
+    canWithdraw: boolean;
+    canDeposit: boolean;
+    updateTime: boolean;
+    accountType: TAccount;
+    balances: Array<TBalance>;
+  };
 };
 
 type TOrderBook = {
@@ -36,4 +48,14 @@ type TBestOrder = {
   };
 };
 
+type TBalance = {
+  asset: TAsset;
+  free: number;
+  locked: string;
+};
+
 type TServerTime = number;
+
+type TAsset = 'BTC' | 'ETH';
+
+type TAccount = 'SPOT';
