@@ -43,6 +43,7 @@ type TTable = Array<TField>;
 type TField = {
   title: string;
   content: string;
+  fieldType: 'row' | 'column';
 };
 
 type TDataRequest = {

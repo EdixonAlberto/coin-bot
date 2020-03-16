@@ -98,7 +98,7 @@ export const orderbook = async (
       let bestOrderAsk = '';
 
       ['bids', 'asks'].map((_bestOrder: string) => {
-        const bestOrder: 'bids' | 'asks' = _bestOrder as 'bids' | 'asks';
+        const bestOrder = _bestOrder as 'bids' | 'asks';
         const bestOrderList = orderbook[bestOrder];
 
         for (let index = 0; index < bestOrderList.length; index++) {
@@ -115,17 +115,21 @@ export const orderbook = async (
         }
       });
 
+      const fieldType: TField['fieldType'] = 'column';
+
       response.embeded({
         header: 'ORDERBOOK',
         title: `Los mejores precio/cantidad en el libro de ordenes para ${asset}`,
         detail: [
           {
             title: 'Bids',
-            content: bestOrderBid
+            content: bestOrderBid,
+            fieldType
           },
           {
             title: 'Asks',
-            content: bestOrderAsk
+            content: bestOrderAsk,
+            fieldType
           }
         ],
         color: '#FF5733'

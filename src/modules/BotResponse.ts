@@ -17,14 +17,13 @@ class BotResponse {
 
     if (typeof detail === 'string') embed.setDescription(detail);
     else {
-      const fields = detail.map((field: TField) => {
-        return {
-          name: field.title,
-          value: field.content,
-          inline: true
-        };
-      });
-      embed.addFields(fields);
+      const table = detail.map((field: TField) => ({
+        name: field.title,
+        value: field.content,
+        inline: field.fieldType === 'column'
+      }));
+
+      embed.addFields(table);
     }
     this.response.channel.send(embed);
   }
