@@ -57,6 +57,8 @@ export const alarm = async (content: TContent, response: BotResponse): Promise<v
           }
 
           if (alarmaActive) {
+            response.direct(''); // TODO: Mension directa al autor del msj (provicional)
+
             response.embeded({
               header: 'ALARMA',
               title: `Alarma ${'id'} activada`,

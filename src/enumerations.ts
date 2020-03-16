@@ -3,6 +3,7 @@ export enum commandsList {
   ping = 'ping',
   date = 'date',
   clean = 'clean',
+  test = 'test',
   // Coin
   price = 'price',
   alarm = 'alarm',

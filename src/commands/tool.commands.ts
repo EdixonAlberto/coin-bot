@@ -28,6 +28,12 @@ export const clean = async (content: TContent, response: BotResponse): Promise<v
   }
 };
 
+export const test = async (content: TContent, response: BotResponse): Promise<void> => {
+  if (content.command === commandsList.test) {
+    // Code Test
+  }
+};
+
 /* Boilerplate */
 // export const /* functionName */ = async (
 //     content: TContent,
