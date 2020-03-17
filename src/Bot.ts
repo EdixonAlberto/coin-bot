@@ -10,7 +10,7 @@ class Bot {
 
   constructor(_options: TOptions) {
     Bot.options = _options;
-    Bot.client = new Client(); // TODO: agregar mas opciones de configuracion
+    Bot.client = new Client(); // TODO: agregar mas opciones de config para el bot
     this.event();
   }
 
@@ -31,21 +31,11 @@ class Bot {
     if (content.prefix === Bot.options.prefix) {
       if (config.modeDebug) console.log('>> CONTENT -> ' + JSON.stringify(content));
 
+      // Verify commnad in commnads list
       if (commandsList[content.command]) {
-        // Tools
-        Command.ping(content, response);
-        Command.date(content, response);
-        Command.clean(content, response);
-
-        // Coins
-        Command.price(content, response);
-        Command.alarm(content, response);
-        Command.orderbook(content, response);
-
-        // Account
-        Command.balance(content, response);
+        Command[content.command](content, response); // Execute command dynamically
       } else {
-        response.general('Comando Incorrecto 😝');
+        response.general('Comando Incorrecto ❌');
         console.log('>> COMMAND -> Incorrect');
       }
     }
