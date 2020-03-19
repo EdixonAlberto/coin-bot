@@ -7,3 +7,4 @@ dist/
 development.env
 *.log
 commands.old.ts
+store.json

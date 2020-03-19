@@ -3,6 +3,7 @@ import BotResponse from '../modules/BotResponse';
 import Utils from '../modules/Utils';
 import { getOrderBook, getPrice } from '../routes';
 
+/* CONFIG */
 const ALARM_INTERVAL: number = config.alarmInterval; // Interval in second
 const DEFAULT_LIMIT: number = 5;
 const DECIMAL_QTY: number = 2;
@@ -11,7 +12,7 @@ const HIGH_QTY: number = 0.1;
 export const price = async (content: TContent, response: BotResponse): Promise<void> => {
   if (content.command === commandsList.price) {
     try {
-      let asset: string = (content.params[0] || 'btc').toUpperCase();
+      const asset = (content.params[0] || 'btc').toUpperCase() as TAsset;
 
       const exchangePrice: number = await getPrice(asset);
 

@@ -30,6 +30,10 @@ type TConfig = {
   };
 };
 
+type TStore = {
+  alarm: Array<number>;
+};
+
 type TEmbed = {
   header: string;
   title: string;
@@ -58,5 +62,6 @@ type TDataRequest = {
 declare namespace NodeJS {
   interface Global {
     config: TConfig;
+    store: TDatabase;
   }
 }

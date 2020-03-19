@@ -1,8 +1,8 @@
 import { Client, Message } from 'discord.js';
-import BotResponse from './modules/BotResponse';
-import MessageProcessor from './modules/MessageProcessor';
-import * as Command from './commands';
-import { commandsList } from './enumerations';
+import BotResponse from './BotResponse';
+import MessageProcessor from './MessageProcessor';
+import * as Command from '../commands';
+import { commandsList } from '../enumerations';
 
 class Bot {
   private static client: Client;
@@ -14,8 +14,12 @@ class Bot {
     this.event();
   }
 
-  public start(): void {
-    Bot.client.login(Bot.options.token);
+  public async start(): Promise<void> {
+    try {
+      await Bot.client.login(Bot.options.token);
+    } catch (error) {
+      console.log('>> BOT -> ', error.message);
+    }
   }
 
   private event(): void {
