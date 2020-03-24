@@ -12,12 +12,7 @@ const config: TConfig = {
     }
   },
   // Internal
-  modeDebug: ENV.NODE_ENV ? false : true,
-  defaultAsset: 'BTC',
-  decimalQty: {
-    asset: 2,
-    fiat: 3
-  }
+  modeDebug: ENV.NODE_ENV ? false : true
 };
 
 global.config = config;

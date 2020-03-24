@@ -23,15 +23,17 @@ type TConfig = {
   };
   // Configuration internal
   modeDebug: boolean;
-  defaultAsset: TAsset;
-  decimalQty: {
-    asset: number;
-    fiat: number;
-  };
 };
 
 type TStore = {
-  alarm: Array<number>;
+  alarmList: Array<number>;
+  setting: {
+    defaultAsset: TAsset;
+    decimalQty: {
+      asset: number;
+      fiat: number;
+    };
+  };
 };
 
 type TEmbed = {
@@ -62,6 +64,6 @@ type TDataRequest = {
 declare namespace NodeJS {
   interface Global {
     config: TConfig;
-    store: TDatabase;
+    store: import('../database/lowdbApi').default;
   }
 }

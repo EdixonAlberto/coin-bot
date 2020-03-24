@@ -8,9 +8,10 @@ class Bot {
   private static client: Client;
   private static options: TOptions;
 
+  // TODO: agregar mas opciones de config para el bot
   constructor(_options: TOptions) {
     Bot.options = _options;
-    Bot.client = new Client(); // TODO: agregar mas opciones de config para el bot
+    Bot.client = new Client();
     this.event();
   }
 
