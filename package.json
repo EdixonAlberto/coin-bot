@@ -19,13 +19,14 @@
   "license": "MIT",
   "private": false,
   "scripts": {
+    "clean": "rm -f ./dist ./store.json ",
+    "lint": "prettier --write ./src/**/*.ts",
     "prod": "node -r ./.env -r ./dist/src/config -r ./dist/src",
     "dev": "ts-node -r ./.env -r ./src/config -r ./src",
-    "lint": "prettier --write ./src/**/*.ts",
-    "build": "tsc",
-    "start": "node -r ./dist/src/config -r ./dist/src",
     "start:prod": "yarn run build && yarn run prod",
-    "start:dev": "nodemon -e ts -w ./src --exec \"clear && yarn run dev\""
+    "start:dev": "nodemon -e ts -w ./src --exec \"clear && yarn run dev\"",
+    "build": "tsc",
+    "start": "node -r ./dist/src/config -r ./dist/src"
   },
   "dependencies": {
     "axios": "0.19.2",
@@ -33,6 +34,7 @@
     "lowdb": "^1.0.0"
   },
   "devDependencies": {
+    "@types/lowdb": "^1.0.9",
     "@types/node": "^13.7.4",
     "@types/unique-string": "^2.0.0",
     "@types/ws": "^7.2.2",
