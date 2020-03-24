@@ -31,12 +31,14 @@
   "dependencies": {
     "axios": "0.19.2",
     "discord.js": "12.0.1",
-    "lowdb": "^1.0.0"
+    "lowdb": "^1.0.0",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
     "@types/lowdb": "^1.0.9",
     "@types/node": "^13.7.4",
     "@types/unique-string": "^2.0.0",
+    "@types/uuid": "^7.0.2",
     "@types/ws": "^7.2.2",
     "dotenv": "8.2.0",
     "nodemon": "^2.0.2",

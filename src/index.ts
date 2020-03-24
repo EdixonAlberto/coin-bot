@@ -1,8 +1,18 @@
-import Bot from './Bot';
+import Bot from './modules/Bot';
+// import DB from './database/DB';
 
-const bot = new Bot({
-  prefix: '$',
-  token: config.discordToken
-});
+async function main() {
+  // const database = new DB({
+  //   file: 'store.json'
+  // });
 
-bot.start();
+  const bot = new Bot({
+    prefix: '$',
+    token: config.discordToken
+  });
+
+  // await database.create();
+  await bot.start();
+}
+
+main();

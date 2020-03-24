@@ -1,6 +1,6 @@
-// import uuid from 'unique-string';
+import { v4 as uuid } from 'uuid';
 import { createHmac } from 'crypto';
-import { getServerTime } from '../routes';
+// import { getServerTime } from '../routes';
 
 namespace Utils {
   export class Time {
@@ -19,14 +19,14 @@ namespace Utils {
     }
   }
 
-  // export class Uuid {
-  //   public static create(type: 'code' | 'id') {
-  //     const _uuid = uuid();
-  //     const id = type === 'code' ? _uuid.substr(0, 6) : _uuid;
+  export class Uuid {
+    public static create(type: 'code' | 'id') {
+      const _uuid = uuid();
+      const id = type === 'code' ? _uuid.substr(0, 6) : _uuid;
 
-  //     return id;
-  //   }
-  // }
+      return id;
+    }
+  }
 
   export class Float {
     public static convert(nro: number | string, decimalsQty: number): string {

@@ -1,4 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js';
+import { colorsList } from '../enumerations';
 
 class BotResponse {
   private response: Message;
@@ -7,7 +8,13 @@ class BotResponse {
     this.response = message;
   }
 
-  public embeded({ header, title, detail, footer = '', color = '' }: TEmbed): void {
+  public embeded({
+    header,
+    title,
+    detail,
+    footer = '',
+    color = colorsList.binance
+  }: TEmbed): void {
     const embed = new MessageEmbed();
     embed
       .setAuthor(header)

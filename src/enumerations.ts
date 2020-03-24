@@ -10,3 +10,9 @@ export enum commandsList {
   // Account
   balance = 'balance'
 }
+
+export enum colorsList {
+  binance = '#F0B90B',
+  ok = '#92D050',
+  error = '#ED1C24'
+}

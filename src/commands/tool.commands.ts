@@ -11,11 +11,21 @@ export const date = (content: TContent, response: BotResponse): void => {
 };
 
 export const clean = async (content: TContent, response: BotResponse): Promise<void> => {
-  // TODO: Verificar si se necesita una respuesta
+  const server: Message = content.message();
+  const messages = await server.channel.messages.fetch();
   try {
-    const server: Message = content.message();
-    const messages = await server.channel.messages.fetch();
     await server.channel.bulkDelete(messages);
+    // TODO: Verificar si se necesita una respuesta
+  } catch (error) {
+    console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
+  }
+};
+
+export const setting = async (
+  content: TContent,
+  response: BotResponse
+): Promise<void> => {
+  try {
   } catch (error) {
     console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
   }
@@ -27,5 +37,7 @@ export const clean = async (content: TContent, response: BotResponse): Promise<v
 //   response: BotResponse
 // ): Promise<void> => {
 //   try {
-//   } catch {}
+//   } catch(error) {
+//     console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
+//   }
 // };
