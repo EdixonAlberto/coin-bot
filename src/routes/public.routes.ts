@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from 'axios';
 const EXCHANGE_URL: string = config.exchange.url;
 const STABLE_COIN = 'USDT';
 
-export const getPrice = async (asset: string): Promise<number> => {
+export const getPrice = async (asset: TAsset): Promise<number> => {
   const res: AxiosResponse = await axios.get(
     `${EXCHANGE_URL}/ticker/price?symbol=${asset + STABLE_COIN}`
   );
@@ -13,7 +13,7 @@ export const getPrice = async (asset: string): Promise<number> => {
   return price;
 };
 
-export const getBestOrder = async (asset: string): Promise<TBestOrder> => {
+export const getBestOrder = async (asset: TAsset): Promise<TBestOrder> => {
   const res: AxiosResponse = await axios.get(
     `${EXCHANGE_URL}/ticker/bookTicker?symbol=${asset + STABLE_COIN}`
   );
@@ -32,7 +32,7 @@ export const getBestOrder = async (asset: string): Promise<TBestOrder> => {
   return spread;
 };
 
-export const getOrderBook = async (asset: string, limit: number): Promise<TOrderBook> => {
+export const getOrderBook = async (asset: TAsset, limit: number): Promise<TOrderBook> => {
   const res: AxiosResponse = await axios.get(
     `${EXCHANGE_URL}/depth?symbol=${asset + STABLE_COIN}&limit=${limit}`
   );

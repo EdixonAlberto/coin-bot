@@ -17,7 +17,7 @@ export const clean = async (content: TContent, response: BotResponse): Promise<v
     await server.channel.bulkDelete(messages);
     // TODO: Verificar si se necesita una respuesta
   } catch (error) {
-    console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
+    console.error('>> ERROR-CLEAN ->', error.message);
   }
 };
 
@@ -27,7 +27,7 @@ export const setting = async (
 ): Promise<void> => {
   try {
   } catch (error) {
-    console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
+    console.error('>> ERROR-SETTING ->', error.message);
   }
 };
 
