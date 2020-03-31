@@ -25,17 +25,6 @@ type TConfig = {
   modeDebug: boolean;
 };
 
-type TStore = {
-  alarmList: Array<number>;
-  setting: {
-    defaultAsset: TAsset;
-    decimalQty: {
-      asset: number;
-      fiat: number;
-    };
-  };
-};
-
 type TEmbed = {
   header: string;
   title: string;
@@ -58,6 +47,13 @@ type TDataRequest = {
   signature: string;
   apiKey: string;
 };
+
+type TActive = {
+  activated: boolean;
+  exchangePrice: number;
+};
+
+type TSign = '>' | '=' | '<';
 
 /************************************ DECLARATIONS **************************************/
 

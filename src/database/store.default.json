@@ -1,0 +1,28 @@
+{
+  "alarmList": [
+    {
+      "id": "1",
+      "price": 5800,
+      "createDate": "01/04/2020"
+    },
+    {
+      "id": "2",
+      "price": 6000,
+      "createDate": "02/04/2020"
+    }
+  ],
+  "settings": [
+    {
+      "key": "defaultAsset",
+      "value": "BTC"
+    },
+    {
+      "key": "assetDecimalQty",
+      "value": 3
+    },
+    {
+      "key": "fiatDecimalQty",
+      "value": 2
+    }
+  ]
+}

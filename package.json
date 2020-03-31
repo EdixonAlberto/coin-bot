@@ -19,7 +19,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "clean": "rm -f ./dist ./store.json ",
+    "clean": "rm -r ./dist ./store.json ",
     "lint": "prettier --write ./src/**/*.ts",
     "prod": "node -r ./.env -r ./dist/src/config -r ./dist/src",
     "dev": "ts-node -r ./.env -r ./src/config -r ./src",
