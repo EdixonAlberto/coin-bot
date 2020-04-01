@@ -1,5 +1,5 @@
 type TStore = {
-  alarmList: Array<TAlarm | any>;
+  alarms: Array<TAlarm | any>;
   settings: Array<TSetting>;
 };
 
@@ -18,4 +18,4 @@ type TSetting = {
 
 type TStoreObjects = TAlarm | TSetting;
 
-type TStoreFields = 'alarmList' | 'settings';
+type TStoreFields = 'alarms' | 'settings';

@@ -82,7 +82,7 @@ class Alarm {
         const alarmActived = await Alarm.checkActivation(this.alarmData);
 
         if (!alarmActived) {
-          const alarms = global.store.index('alarmList') as TAlarm[];
+          const alarms = global.store.index('alarms') as TAlarm[];
           const alarmFound = alarms?.find(
             (alarm: TAlarm) => alarm.price === this.alarmData.price
           );

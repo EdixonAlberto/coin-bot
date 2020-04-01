@@ -18,7 +18,7 @@ class LowdbApi {
     try {
       // Se agrega un obj en particular, para que el metodo [find] no de error
       const result = this.db
-        .get(path as 'alarmList')
+        .get(path as 'alarms')
         .find(keys)
         .value();
       return result;
@@ -33,7 +33,7 @@ class LowdbApi {
   ): Promise<ArrayLike<TStoreObjects> | undefined> {
     try {
       const result = await this.db
-        .get(path as 'alarmList')
+        .get(path as 'alarms')
         .push(obj)
         .write();
       return result;
@@ -50,9 +50,16 @@ class LowdbApi {
     }
   }
 
-  public destroy(path: TStoreFields, obj: object): void {
+  public async destroy(
+    path: TStoreFields,
+    obj: object
+  ): Promise<ArrayLike<TStoreObjects> | undefined> {
     try {
-      // TODO:
+      const result = await this.db
+        .get(path)
+        .remove(obj)
+        .write();
+      return result;
     } catch (error) {
       console.error('>> ERROR-DB-DESTROY ->', error.message);
     }
