@@ -10,9 +10,15 @@ namespace Utils {
       let timeUnix: number = date.getTime();
       timeUnix = presicion ? timeUnix : Math.round(timeUnix / 1000);
 
+      const timeUtc = date.toISOString(); // Generating univesal ISO format
+
+      // Generating ISO-8601 format, source: https://www.iso.org/iso-8601-date-and-time-format.html
+      const timeIso = timeUtc.substr(0, timeUtc.search(/T/));
+
       const currentTime = {
         unix: timeUnix,
-        utc: date.toISOString()
+        utc: date.toISOString,
+        iso8601: timeIso
       };
 
       return currentTime;

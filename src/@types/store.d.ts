@@ -5,6 +5,8 @@ type TStore = {
 
 type TAlarm = {
   id: string;
+  asset: TAsset;
+  sign: TSign;
   price: number;
   createDate: string;
 };

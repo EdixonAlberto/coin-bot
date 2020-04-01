@@ -49,7 +49,6 @@ type TDataRequest = {
 };
 
 type TActive = {
-  activated: boolean;
   exchangePrice: number;
 };
 
