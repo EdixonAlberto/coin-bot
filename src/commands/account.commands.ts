@@ -70,6 +70,6 @@ export const balance = async (content: TContent, response: BotResponse): Promise
       } else response.general(`No hay saldo ${asset}`);
     }
   } catch (error) {
-    console.error('>> ERROR-ACCOUNT ->', error.message);
+    console.error('>> ERROR-ACCOUNT ->', error.response?.data);
   }
 };

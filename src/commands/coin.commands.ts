@@ -1,83 +1,132 @@
 import BotResponse from '../modules/BotResponse';
 import Utils from '../modules/Utils';
 import { getOrderBook, getPrice } from '../routes';
+import { colorsList } from '../enumerations';
+import Alarm from '../modules/Alarm';
 
 /* CONFIG */
-const ALARM_INTERVAL: number = config.alarmInterval; // Interval in second
 const DEFAULT_LIMIT: number = 5;
 const DECIMAL_QTY: number = 2;
 const HIGH_QTY: number = 0.1;
+const DEFAULT_ASSET: string = 'BTC';
 
 export const price = async (content: TContent, response: BotResponse): Promise<void> => {
-  const asset = (content.params[0] || 'btc').toUpperCase() as TAsset;
+  const asset = (content.params[0] || DEFAULT_ASSET).toUpperCase() as TAsset;
 
   try {
-    const exchangePrice: number = await getPrice(asset);
+    const exchangePrice = await getPrice(asset);
 
     response.general(`Precio del ${asset} = **${exchangePrice} $**`);
   } catch (error) {
-    console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
+    console.error('>> ERROR-PRICE ->', error.response?.data);
   }
 };
 
 export const alarm = async (content: TContent, response: BotResponse): Promise<void> => {
-  // TODO: Validar multiples alarmas llevando un registro de las mismas en una DB
-  const ecuation: Array<string> = content.params;
-  const sign: string = ecuation[1];
+  const action: string | undefined = content.params.shift(); // deleting from firts parameter
 
-  if (['>', '=', '<'].includes(sign)) {
-    const asset: string = ecuation[0].toUpperCase();
-    const price: number = Number(ecuation[2]);
-    let alarmaActive: boolean = false;
+  switch (action) {
+    case 'create':
+      const alarm = new Alarm(content.params, response);
+      const newAlarm = await alarm.create();
 
-    try {
-      let exchangePrice: number = await getPrice(asset);
-      if (config.modeDebug) console.log('Price = ' + exchangePrice);
+      if (newAlarm) {
+        const alarmSaved = (await global.store.add('alarms', newAlarm)) as
+          | TAlarm[]
+          | undefined;
 
-      // TODO: abstraer price monitor
-      const priceMonitor = setInterval(async () => {
-        exchangePrice = await getPrice(asset);
-        if (config.modeDebug) console.log('Price = ' + exchangePrice);
-
-        switch (sign) {
-          case '>':
-            if (exchangePrice >= price) alarmaActive = true;
-            break;
-
-          case '=':
-            if (exchangePrice == price) alarmaActive = true;
-            break;
-
-          case '<':
-            if (exchangePrice <= price) alarmaActive = true;
-            break;
-        }
-
-        if (alarmaActive) {
-          response.direct(''); // TODO: Mension directa al autor del msj (provicional)
+        if (alarmSaved) {
+          const alarmsTable = Alarm.alarm2embed(alarmSaved);
 
           response.embeded({
             header: 'ALARMA',
-            title: `Alarma ${'id'} activada`,
-            detail: `Precio del ${asset} = **${exchangePrice} $**`,
-            color: 'green'
+            title: 'Alarma Creada',
+            detail: alarmsTable,
+            color: colorsList.ok
           });
-          clearInterval(priceMonitor);
         }
-      }, ALARM_INTERVAL);
-    } catch (error) {
-      console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
-    }
-    // TODO: Cambiar por un id corto que indentifique la alarma activada
-    // y guardarla usando redux
-    response.general(`OK yo te aviso! 👍`);
-  } else {
-    response.embeded({
-      header: 'ALARM',
-      title: 'Signo Incorrecto',
-      detail: `Solo los siguientes signos de comparación estan disponible: \`>, =, <\``,
-      color: '0xff0000'
-    });
+      }
+      break;
+
+    case 'list':
+      const alarms = global.store.index('alarms') as TAlarm[] | undefined;
+
+      if (alarms?.length) {
+        const alarmsTable = Alarm.alarm2embed(alarms);
+
+        response.embeded({
+          header: 'ALARMA',
+          title: 'Lista de Alarmas Creadas',
+          detail: alarmsTable
+        });
+      } else {
+        response.embeded({
+          header: 'ALARMA',
+          title: '',
+          detail: 'La lista de alarmas está vacía'
+        });
+      }
+      break;
+
+    case 'update':
+      break;
+
+    case 'delete':
+      const alarmID = content.params[0] as string;
+
+      if (alarmID === 'all') {
+        // FIXME: no se eliminan todas las alarmas
+        // const alarms = global.store.index('alarms') as TAlarm[] | undefined;
+        // if (alarms?.length) {
+        //   alarms.map(async (alarm: TAlarm) => {
+        //     const result = (await global.store.destroy('alarms', {
+        //       id: alarm.id
+        //     })) as TAlarm[] | undefined;
+        //     console.log(result?.[0]?.id);
+        //   });
+        //   response.embeded({
+        //     header: 'ALARMA',
+        //     title: '',
+        //     detail: 'Se eliminaron todas las alarmas',
+        //     color: colorsList.ok
+        //   });
+        // }
+      } else {
+        const alarmDeleted = (await global.store.destroy('alarms', {
+          id: alarmID
+        })) as TAlarm[] | undefined;
+
+        if (alarmDeleted) {
+          const alarmsTable = Alarm.alarm2embed(alarmDeleted);
+
+          if (alarmDeleted?.length) {
+            response.embeded({
+              header: 'ALARMA',
+              title: `Alarma Eliminada`,
+              detail: alarmsTable,
+              color: colorsList.ok
+            });
+          } else {
+            response.embeded({
+              header: 'ALARMA',
+              title: '',
+              detail: 'La lista de alarmas está vacía',
+              color: colorsList.error
+            });
+          }
+        }
+      }
+      break;
+    default:
+      response.embeded({
+        header: 'ALARM',
+        title: 'Error al establecer la alarma',
+        detail:
+          'Ninguna acción establecida\n' +
+          'Lista de acciones: `create`, `list`, `update`, `delete`',
+        color: colorsList.error
+      });
+      break;
   }
 };
 
@@ -85,7 +134,7 @@ export const orderbook = async (
   content: TContent,
   response: BotResponse
 ): Promise<void> => {
-  const asset: string = (content.params[0] || 'btc').toUpperCase();
+  const asset = (content.params[0] || DEFAULT_ASSET).toUpperCase() as TAsset;
   const limit: number = Number(content.params[1] || DEFAULT_LIMIT);
 
   try {
@@ -129,9 +178,9 @@ export const orderbook = async (
           fieldType
         }
       ],
-      color: '#FF5733'
+      color: colorsList.error
     });
   } catch (error) {
-    console.error(`>> ERROR-${content.command.toUpperCase()} -> ${error}`);
+    console.error('>> ERROR-ORDERBOOK ->', error.response?.data);
   }
 };
