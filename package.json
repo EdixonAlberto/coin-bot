@@ -29,7 +29,7 @@
     "start": "node -r ./dist/src/config -r ./dist/src"
   },
   "dependencies": {
-    "axios": "0.19.2",
+    "axios": "0.21.1",
     "discord.js": "12.0.1",
     "lowdb": "^1.0.0",
     "uuid": "^7.0.3"
